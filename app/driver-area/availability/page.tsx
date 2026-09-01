@@ -6,8 +6,13 @@ export default async function AvailabilityPage() {
 
   const [{ data: rounds }, { data: availability }] =
     await Promise.all([
-      s.from("rounds").select("*").order("event_date"),
-      s.from("driver_availability").select("*").eq("driver_id", user.id),
+      s.from("rounds")
+        .select("*")
+        .order("event_date"),
+
+      s.from("driver_availability")
+        .select("*")
+        .eq("driver_id", user.id),
     ]);
 
   return (

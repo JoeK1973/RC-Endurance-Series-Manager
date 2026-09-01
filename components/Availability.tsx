@@ -37,16 +37,29 @@ export default function Availability({
     const supabase = createClient();
 
     // Get the currently logged-in user
-    const {
-      data: { user },
-      error: userError,
-    } = await supabase.auth.getUser();
+const {
+  data: { user },
+  error: userError,
+} = await supabase.auth.getUser();
 
-    if (userError || !user) {
-      setMessage("Please log in before updating your availability.");
-      setSaving(null);
-      return;
+if (userError || !user) {
+  setMessage("Please log in before updating your availability.");
+  setSaving(null);
+  return;
+}
+
+const { error } = await supabase
+  .from("driver_availability")
+  .upsert(
+    {
+      driver_id: user.id,
+      round_id: roundId,
+      status,
+    },
+    {
+      onConflict: "driver_id,round_id",
     }
+  );
 
     // Find the driver's actual database record.
     // driver_availability.driver_id references drivers.id,

@@ -1,1 +1,103 @@
-"use client";import{useState}from"react";import{createClient}from"@/lib/supabase/client";export default function C({driverId,rounds}:{driverId:string,rounds:any[]}){const[m,setM]=useState("");async function go(f:FormData){const s=createClient();const{data:{user}}=await s.auth.getUser();if(!user){location.href="/login";return;}const{data:t}=await s.from("teams").select("id").eq("manager_id",user.id).limit(1);if(!t?.[0]){setM("You need to create a team before sending a request.");return;}const{error}=await s.from("contact_requests").insert({team_id:t[0].id,driver_id:driverId,round_id:String(f.get("round_id")),message:String(f.get("message"))});setM(error?error.message:"Contact request sent.")}return <form action={go} className="card space"><h2>Contact this driver</h2><select name="round_id">{rounds.map((r:any)=><option key={r.id} value={r.id}>{r.name}</option>)}</select><textarea className="space" name="message" defaultValue="We are interested in having you drive for our team."/><button className="btn space">Send contact request</button>{m&&<p className="muted">{m}</p>}</form>}
+"use client";
+
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+
+export default function Contact({
+  driverId,
+  rounds,
+}: {
+  driverId: string;
+  rounds: any[];
+}) {
+  const [message, setMessage] = useState("");
+  const [sending, setSending] = useState(false);
+
+  async function go(formData: FormData) {
+    setMessage("");
+    setSending(true);
+
+    const supabase = createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      window.location.href = "/login";
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/contact-request", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          driverId,
+          roundId: String(formData.get("round_id")),
+          message: String(formData.get("message")),
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setMessage(
+          result.error || "Something went wrong sending the contact request."
+        );
+        return;
+      }
+
+      setMessage(
+        result.emailSent
+          ? "Contact request sent and email notification delivered."
+          : "Contact request saved, but the email notification could not be sent."
+      );
+    } catch (error) {
+      console.error(error);
+      setMessage("Unable to send the contact request.");
+    } finally {
+      setSending(false);
+    }
+  }
+
+  return (
+    <form action={go} className="card space">
+      <h2>Contact this driver</h2>
+
+      <label>
+        Championship round
+        <select className="input" name="round_id" required>
+          {rounds.map((round: any) => (
+            <option key={round.id} value={round.id}>
+              {round.name}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <label>
+        Message
+        <textarea
+          className="input space"
+          name="message"
+          required
+          rows={5}
+          defaultValue="We are interested in having you drive for our team."
+        />
+      </label>
+
+      <button
+        className="btn space"
+        type="submit"
+        disabled={sending}
+      >
+        {sending ? "Sending..." : "Send contact request"}
+      </button>
+
+      {message && <p className="muted">{message}</p>}
+    </form>
+  );
+}

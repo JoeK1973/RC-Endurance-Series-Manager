@@ -1,1 +1,0 @@
-<h1>Results</h1><div className="card space"><p className="muted">Round and championship results will appear here.</p></div>

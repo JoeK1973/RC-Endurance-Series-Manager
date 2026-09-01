@@ -1,1 +1,0 @@
-<h1>Manage Drivers</h1><div className="card space"><p className="muted">Driver records are managed through Supabase and the driver area in this version.</p></div>

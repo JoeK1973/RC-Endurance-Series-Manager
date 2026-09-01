@@ -1,1 +1,0 @@
-<h1>Manage Teams</h1><div className="card space"><p className="muted">Team records are stored in Supabase. A dedicated admin editor can be added next.</p></div>

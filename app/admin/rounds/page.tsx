@@ -1,1 +1,0 @@
-import{requireUser}from"@/components/RequireUser";export default async function P(){const{s}=await requireUser();const{data}=await s.from("rounds").select("*").order("event_date");return <><h1>Manage Rounds</h1><div className="grid space">{(data||[]).map((r:any)=><div className="card" key={r.id}><b>{r.name}</b><p className="muted">{r.event_date} · {r.venue}</p></div>)}</div></>}

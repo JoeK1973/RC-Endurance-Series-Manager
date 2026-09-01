@@ -19,3 +19,28 @@ drop policy if exists "driver reads contacts" on public.contact_requests;create 
 drop policy if exists "manager sends contacts" on public.contact_requests;create policy "manager sends contacts" on public.contact_requests for insert with check (exists(select 1 from public.teams t where t.id=contact_requests.team_id and t.manager_id=auth.uid()));
 -- Promote your account after registering:
 -- update public.profiles set role='admin' where email='YOUR_EMAIL';
+
+-- ADMIN ROUND MANAGEMENT
+-- This helper safely checks the current user's role without exposing profile rows.
+create or replace function public.is_admin()
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and role = 'admin'
+  );
+$$;
+
+alter table public.rounds enable row level security;
+
+drop policy if exists "admins manage rounds" on public.rounds;
+create policy "admins manage rounds"
+on public.rounds
+for all
+to authenticated
+using (public.is_admin())
+with check (public.is_admin());

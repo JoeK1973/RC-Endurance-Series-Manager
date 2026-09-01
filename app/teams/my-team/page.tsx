@@ -1,0 +1,1 @@
+export default function P(){return <><h1 className="text-3xl font-bold">My Team</h1><div className="card p-6 mt-5"><h2 className="text-xl font-bold">Apex Racing</h2><p className="mt-3">Driver 1 — Joe Bloggs</p><p>Driver 2 — Alex Morgan</p><p>Driver 3 — 🟡 Vacancy</p><p>Reserve — 🟡 Vacancy</p></div></>}

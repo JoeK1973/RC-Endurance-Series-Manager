@@ -1,0 +1,1 @@
+import Link from"next/link";export default function P(){return <><h1 className="text-3xl font-bold">Find a Driver</h1><Link className="btn mt-5" href="/drivers">Open Driver Search</Link></>}

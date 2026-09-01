@@ -1,0 +1,1 @@
+import{drivers}from"@/lib/sample";export default function P(){return <><h1 className="text-3xl font-bold">Manage Drivers</h1><div className="space-y-3 mt-5">{drivers.map(d=><div className="card p-5" key={d.id}><b>{d.name}</b><p className="muted">{d.club} · {d.status}</p></div>)}</div></>}

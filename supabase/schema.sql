@@ -1,0 +1,10 @@
+create extension if not exists "pgcrypto";
+create table profiles(id uuid primary key references auth.users(id) on delete cascade,name text not null,email text,role text not null default 'driver' check(role in('driver','team_manager','admin')),club text,created_at timestamptz default now());
+create table drivers(profile_id uuid primary key references profiles(id) on delete cascade,classes text[] default '{}',experience text,bio text,endurance_experience text);
+create table championships(id uuid primary key default gen_random_uuid(),name text not null,season text);
+create table rounds(id uuid primary key default gen_random_uuid(),championship_id uuid references championships(id) on delete cascade,name text not null,event_date date,venue text);
+create table driver_availability(driver_id uuid references drivers(profile_id) on delete cascade,round_id uuid references rounds(id) on delete cascade,status text not null check(status in('looking_for_team','reserve','affiliated','unavailable')),primary key(driver_id,round_id));
+create table teams(id uuid primary key default gen_random_uuid(),name text not null,manager_id uuid references profiles(id),club text);
+create table team_drivers(team_id uuid references teams(id) on delete cascade,driver_id uuid references drivers(profile_id) on delete cascade,round_id uuid references rounds(id) on delete cascade,primary key(team_id,driver_id,round_id));
+create table shortlists(team_id uuid references teams(id) on delete cascade,driver_id uuid references drivers(profile_id) on delete cascade,round_id uuid references rounds(id) on delete cascade,primary key(team_id,driver_id,round_id));
+create table contact_requests(id uuid primary key default gen_random_uuid(),team_id uuid references teams(id) on delete cascade,driver_id uuid references drivers(profile_id) on delete cascade,round_id uuid references rounds(id) on delete cascade,message text,status text default 'pending' check(status in('pending','accepted','declined')),created_at timestamptz default now());

@@ -1,0 +1,1 @@
+import{rounds}from"@/lib/sample";export default function P(){return <><h1 className="text-3xl font-bold">Championship Calendar</h1><div className="space-y-3 mt-5">{rounds.map(r=><div className="card p-5" key={r.id}><b>{r.name}</b><p className="muted">{r.date} · {r.venue}</p></div>)}</div></>}

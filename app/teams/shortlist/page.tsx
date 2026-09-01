@@ -1,0 +1,1 @@
+export default function P(){return <><h1 className="text-3xl font-bold">My Shortlist</h1><div className="card p-6 mt-5"><p className="muted">Saved shortlisted drivers will appear here when connected to Supabase.</p></div></>}

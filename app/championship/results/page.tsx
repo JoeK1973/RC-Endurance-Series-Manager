@@ -1,0 +1,1 @@
+export default function P(){let x=[["Apex Racing",100],["Coastline Endurance",88],["Enduro United",76]];return <><h1 className="text-3xl font-bold">Results</h1><div className="card mt-5">{x.map((r,i)=><div key={r[0]} className="grid grid-cols-3 p-4 border-b border-slate-700"><span>{i+1}</span><b>{r[0]}</b><span>{r[1]} pts</span></div>)}</div></>}

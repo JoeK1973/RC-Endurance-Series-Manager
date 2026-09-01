@@ -1,1 +1,10 @@
-import Link from"next/link";import{createClient}from"@/lib/supabase/server";export default async function P(){const s=await createClient();const{data:rounds}=await s.from("rounds").select("*").order("event_date");return <><h1>Championship</h1><div className="tabs"><Link href="/championship">Calendar</Link><Link href="/championship/regulations">Regulations</Link><Link href="/championship/results">Results</Link></div><div className="grid two">{(rounds||[]).map((r:any)=><div className="card" key={r.id}><h2>{r.name}</h2><p className="muted">{r.event_date} · {r.venue}</p></div>)}</div></>}
+export default function RegulationsPage() {
+  return (
+    <>
+      <h1>Regulations</h1>
+      <div className="card space">
+        <p className="muted">Championship regulations will be published here by the series administrator.</p>
+      </div>
+    </>
+  );
+}

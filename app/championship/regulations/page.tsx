@@ -1,1 +1,0 @@
-<h1>Regulations</h1><div className="card space"><p className="muted">Championship regulations will be published here by the series administrator.</p></div>

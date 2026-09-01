@@ -1,1 +1,1 @@
-export default function P(){return <><h1 className="text-3xl font-bold">Regulations</h1><div className="card p-6 mt-5"><p className="muted">Official championship regulations can be published and managed here.</p></div></>}
+<h1>Regulations</h1><div className="card space"><p className="muted">Championship regulations will be published here by the series administrator.</p></div>

@@ -1,0 +1,2 @@
+import {createClient} from "@/lib/supabase/server";import {redirect} from "next/navigation";
+export async function requireUser(){const s=await createClient();const{data:{user}}=await s.auth.getUser();if(!user)redirect("/login");return {s,user};}
